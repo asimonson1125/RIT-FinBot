@@ -7,6 +7,7 @@ export const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS
 client.on('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
    client.user.setActivity("the market");
+   client.user.setStatus('dnd');
    twitterStream();
 });
 
