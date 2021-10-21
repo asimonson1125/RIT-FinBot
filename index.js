@@ -15,8 +15,8 @@ client.on('messageCreate', msg => {
    try {
       if (msg.author.bot || !msg.guild) return;
       if (msg.member.permissionsIn(msg.channel).has("ADMINISTRATOR")) {
-         if (msg.content.startsWith("~link ") && msg.content.indexOf("<") != -1) {
-            PassThrough;
+         if (msg.content.startsWith("~admin")) {
+            msg.reply("yes, you're an admin.")
          }
       }
       if (msg.content.startsWith("~test")) {
@@ -27,10 +27,5 @@ client.on('messageCreate', msg => {
       msg.reply(`UNCAUGHT ERROR: ${e}`);
    }
 });
-
-function updater() {
-   updateBoards(client);
-}
-
 
 client.login(token);
