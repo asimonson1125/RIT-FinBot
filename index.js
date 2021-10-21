@@ -1,11 +1,13 @@
 import { token } from './auth.js'
 import { Client, Intents, MessageEmbed } from 'discord.js';
 import { PassThrough } from 'stream';
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+import { twitterStream } from './twitterHandler.js'
+export const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 client.on('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
    client.user.setActivity("the market");
+   twitterStream();
 });
 
 client.on('messageCreate', msg => {

@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "discord.js": "^13.2.0",
-    "nodemon": "^2.0.14"
+    "twitter": "^1.7.1",
+    "user-stream": "^0.0.8"
   },
   "type": "module"
 }
