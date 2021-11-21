@@ -2,6 +2,10 @@ import os
 import imaplib
 import email
 from email.header import decode_header
+import arrow
+from dotenv import load_dotenv
+load_dotenv('.env')
+
 
 def mail_init():
     user = os.getenv("email")
@@ -40,7 +44,43 @@ def getHeaders(response):
     received, encoding = decode_header(msg.get("Received"))[0]
     if isinstance(received, bytes):
         received = received.decode(encoding)
-    return msg, subject, From, received
+
+    headers = {
+        "from": From,
+        "subject": subject,
+        "received": received,
+        "msg": msg
+    }
+    return headers
+
+
+def monthToNum(month):
+    if month == "Jan":
+        return "01"
+    elif month == "Feb":
+        return "02"
+    elif month == "Mar":
+        return "03"
+    elif month == "Apr":
+        return "04"
+    elif month == "May":
+        return "05"
+    elif month == "Jun":
+        return "06"
+    elif month == "Jul":
+        return "07"
+    elif month == "Aug":
+        return "08"
+    elif month == "Sep":
+        return "09"
+    elif month == "Oct":
+        return "10"
+    elif month == "Nov":
+        return "11"
+    elif month == "Dec":
+        return "12"
+    else:
+        raise Exception("Invalid month: " + month)
 
 
 def getEmail(email_id):
@@ -48,15 +88,18 @@ def getEmail(email_id):
     return msg
 
 
-from dotenv import load_dotenv
-load_dotenv('.env')
+
 emailClient = mail_init()
 messages = getMessages()  # message count
 for i in range(messages):
     mail = getEmail(i + 1)
-    content, mailSub, mailFrom, received = getHeaders(mail)
-    print(mailFrom, mailSub)
-    received = received[received.index(',') + 2:]
-    received = received[:received.index('-') - 1]  # This will break if local timezone is not behind UDT
-    print(received)  # the time that the message was received in local time
-    print("\n" * 3)
+    headers = getHeaders(mail)
+    From = "updates@vitalknowledge.net"
+    if (headers["from"].__contains__(From)):
+        print(headers["from"], headers["subject"])
+        received = headers["received"][headers["received"].index(',') + 2:headers["received"].index('(') -1]
+        time = received.split(" ")
+        time[1] = monthToNum(time[1])
+        received = " ".join(time)
+        print(arrow.get(received, "DD MM YYYY HH:mm:ss Z").to('local'))
+        print("\n")
