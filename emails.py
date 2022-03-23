@@ -4,6 +4,7 @@ import email
 from email.header import decode_header
 import arrow
 from dotenv import load_dotenv
+
 load_dotenv('.env')
 
 
@@ -88,7 +89,6 @@ def getEmail(email_id):
     return msg
 
 
-
 emailClient = mail_init()
 messages = getMessages()  # message count
 for i in range(messages):
@@ -97,7 +97,7 @@ for i in range(messages):
     From = "updates@vitalknowledge.net"
     if (headers["from"].__contains__(From)):
         print(headers["from"], headers["subject"])
-        received = headers["received"][headers["received"].index(',') + 2:headers["received"].index('(') -1]
+        received = headers["received"][headers["received"].index(',') + 2:headers["received"].index('(') - 1]
         time = received.split(" ")
         time[1] = monthToNum(time[1])
         received = " ".join(time)
